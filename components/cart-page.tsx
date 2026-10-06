@@ -1,0 +1,12 @@
+'use client';
+
+import Link from 'next/link';
+import { ArrowLeft, ArrowRight, Minus, Plus, ShoppingBag, Trash2 } from 'lucide-react';
+import { useApp } from './providers';
+import { MobileNav, SiteHeader } from './site-header';
+
+export function CartPage() {
+  const { cart, subtotal, setQuantity, removeFromCart } = useApp();
+  const delivery = subtotal === 0 || subtotal >= 1500 ? 0 : 199; const discount = subtotal >= 1500 ? Math.round(subtotal * .15) : 0; const total = Math.max(0, subtotal + delivery - discount);
+  return <main><SiteHeader /><div className="page-shell inner-page"><Link href="/menu" className="back-link"><ArrowLeft /> Continue shopping</Link><div className="page-title"><span>YOUR BAG</span><h1>Your Kappa order.</h1><p>{cart.length ? `${cart.length} different item${cart.length === 1 ? '' : 's'} in your bag.` : 'Your bag is empty. Let’s fix that.'}</p></div>{!cart.length ? <div className="empty-state"><ShoppingBag size={42}/><h2>Nothing here yet.</h2><p>Choose a bucket, burger or side to get started.</p><Link href="/menu" className="primary-button">Browse menu <ArrowRight /></Link></div> : <div className="cart-layout"><section className="cart-list">{cart.map((item) => <article className="cart-item" key={item.id}><img src={item.image} alt={item.name} /><div className="cart-item-main"><span>{item.category}</span><Link href={`/product/${item.slug}`}><h3>{item.name}</h3></Link><p>{item.calories} calories</p><div className="quantity"><button onClick={() => setQuantity(item.id, item.quantity - 1)}><Minus /></button><b>{item.quantity}</b><button onClick={() => setQuantity(item.id, item.quantity + 1)}><Plus /></button></div></div><strong>Rs. {(item.price * item.quantity).toLocaleString()}</strong><button className="trash" onClick={() => removeFromCart(item.id)} aria-label="Remove"><Trash2 /></button></article>)}</section><aside className="summary-card"><span>ORDER SUMMARY</span><h2>Almost there.</h2><div><span>Subtotal</span><b>Rs. {subtotal.toLocaleString()}</b></div><div><span>Delivery</span><b>{delivery ? `Rs. ${delivery}` : 'FREE'}</b></div>{discount > 0 && <div><span>Combo discount</span><b>− Rs. {discount.toLocaleString()}</b></div>}<hr/><div className="total-row"><span>Total</span><b>Rs. {total.toLocaleString()}</b></div><p>Free delivery from Rs. 1,500. Extra combo savings from Rs. 1,500.</p><Link href="/checkout" className="primary-button wide">Checkout <ArrowRight /></Link></aside></div>}</div><MobileNav /></main>;
+}
