@@ -1,4 +1,4 @@
-# KappaFood
+# CheezyBeezy
 
 Production-style fast-food ordering frontend rebuilt from the supplied EmberBite project while preserving the existing ordering API contract.
 
