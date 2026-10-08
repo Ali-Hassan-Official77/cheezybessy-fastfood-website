@@ -20,6 +20,8 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
     <html lang="en" data-scroll-behavior="smooth">
       <body>
         <AppProvider>{children}</AppProvider>
+
+        <script src="https://cdn.zanderio.ai/widget/loader.js" data-id="wdg_ZVxoL3mjKipdEY8Yg8SJHjf0" defer></script>
       </body>
     </html>
   );
